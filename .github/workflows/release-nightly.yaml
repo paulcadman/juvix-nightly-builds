@@ -68,7 +68,7 @@ jobs:
   smoke-test:
     name: Smoke test
     needs: build
-    runs-on: ubunutu-20.04
+    runs-on: ubuntu-20.04
     steps:
       - name: checkout code
         uses: actions/checkout@v3
