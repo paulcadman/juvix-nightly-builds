@@ -65,12 +65,73 @@ jobs:
           name: juvix-tgz-artifact
           path: /tmp/${{ steps.juvix-tgz.outputs.filename }}
 
+  smoke-test:
+    name: Smoke test
+    needs: build
+    runs-on: ubunutu-20.04
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v3
+        with:
+          submodules: true
+          repository: anoma/juvix
+          ref: main
+          path: juvix
+
+      - uses: actions/checkout@v3
+        with:
+          repository: jonaprieto/smoke
+          path: smoke
+
+      - name: Workaround runner image issue
+        # https://github.com/actions/runner-images/issues/7061
+        run: sudo chown -R $USER /usr/local/.ghcup
+
+      - name: Add ~/.local/bin to PATH
+        run: |
+          echo "$HOME/.local/bin" >> $GITHUB_PATH
+
+      - name: Install libicu for testing
+        run: sudo apt install -y libicu66
+
+      - uses: haskell/actions/setup@v2
+        name: Setup Haskell
+        with:
+          ghc-version: 9.2.5
+          enable-stack: true
+          stack-version: latest
+
+      - uses: freckle/stack-cache-action@v2
+        with:
+          working-directory: smoke
+
+      - name: Install Smoke
+        run: |
+          cd smoke
+          stack install
+
+      - uses: actions/download-artifact@v3
+        with:
+          name: juvix-tgz-arifact
+          path: ~/.local/bin
+
+      - name: Extract juvix binary
+        run: |
+          cd ~/.local/bin
+          tar xf juvix-linux*
+
+      - name: Run smoke tests
+        run: |
+          cd juvix
+          make smoke-only
+
   release:
     name: Release
-    needs: build
+    needs: [build, smoke-test]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/download-artifact@v3
+        id: download
         with:
           name: juvix-tgz-arifact
 
@@ -81,7 +142,7 @@ jobs:
           commit: "main"
           name: "Nightly Build ${{ needs.build.outputs.now }} ${{ needs.build.outputs.juvix-version }}"
           makeLatest: true
-          artifacts: juvix-linux*
+          artifacts: ${{ steps.download.outputs.download-path }}
           artifactErrorsFailBuild: true
           allowUpdates: true
 
