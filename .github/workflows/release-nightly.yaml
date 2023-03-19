@@ -165,7 +165,7 @@ jobs:
       - uses: actions/download-artifact@v3
         id: download
         with:
-          name: juvix-tgz-arifact
+          name: juvix-tgz-artifact
 
       - name: create nightly release
         uses: ncipollo/release-action@v1
