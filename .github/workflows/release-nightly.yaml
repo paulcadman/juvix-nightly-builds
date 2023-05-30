@@ -104,14 +104,12 @@ jobs:
 
       - name: create release tar
         run: |
-          cp "${{ env.HOME }}/.local/bin/juvix" /tmp/juvix
-          cd /tmp
-          tar zcf juvix-darwin_x86_64.tar.gz juvix
+          tar zcf juvix-darwin_x86_64.tar.gz -C "${{ env.HOME }}/.local/bin" juvix
 
       - uses: actions/upload-artifact@v3
         with:
           name: macos-binary
-          path: /tmp/juvix-darwin*
+          path: juvix-darwin*
           if-no-files-found: error
 
   publish-release:
