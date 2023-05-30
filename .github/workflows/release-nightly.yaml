@@ -142,7 +142,7 @@ jobs:
 
   bench:
     if: false
-    needs: build-linux
+    needs: publish-release
     name: Run benchmarks
     runs-on: ubuntu-20.04
     steps:
