@@ -69,22 +69,22 @@ jobs:
           allowUpdates: true
           draft: true
 
-    publish-release:
-      needs: build
-      runs-on: ubuntu-latest
-      name: Publish Release
-      steps:
-      - name: checkout code
-        uses: actions/checkout@v3
-        with:
-          repository: anoma/juvix
-          ref: main
-      - name: make nightly release latest
-        uses: ncipollo/release-action@v1
-        with:
-          tag: ${{needs.build.outputs.tag}}
-          makeLatest: true
-          allowUpdates: true
+  publish-release:
+    needs: build
+    runs-on: ubuntu-latest
+    name: Publish Release
+    steps:
+    - name: checkout code
+      uses: actions/checkout@v3
+      with:
+        repository: anoma/juvix
+        ref: main
+    - name: make nightly release latest
+      uses: ncipollo/release-action@v1
+      with:
+        tag: ${{needs.build.outputs.tag}}
+        makeLatest: true
+        allowUpdates: true
 
   bench:
     if: false
