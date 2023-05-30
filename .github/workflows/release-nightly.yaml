@@ -71,6 +71,7 @@ jobs:
 
     publish-release:
       needs: build
+      runs-on: ubuntu-latest
       name: Publish Release
       steps:
       - name: checkout code
