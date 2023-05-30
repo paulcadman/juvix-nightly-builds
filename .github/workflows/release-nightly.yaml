@@ -93,7 +93,6 @@ jobs:
         id: stack
         uses: freckle/stack-action@v4
         with:
-          working-directory: main
           test: false
 
       - name: Install Juvix
