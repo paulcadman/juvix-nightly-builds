@@ -61,6 +61,9 @@ jobs:
         id: date
         run: echo "now=$(date +'%Y-%m-%d')" >> $GITHUB_OUTPUT
 
+      - name: log juvix version
+        run: juvix --version
+
       - name: set Juvix version to juvix-version.current output variable
         id: juvix-version
         run: echo "current=$(juvix --version | head -n 1 | sed -E 's/[^0-9]+(.*)/\1/')" >> $GITHUB_OUTPUT
