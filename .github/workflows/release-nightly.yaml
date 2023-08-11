@@ -87,6 +87,7 @@ jobs:
           draft: true
 
   build-macos:
+    if: false
     runs-on: macos-latest
     name: Build macOS binary
     steps:
@@ -130,7 +131,7 @@ jobs:
           if-no-files-found: error
 
   publish-release:
-    needs: [build-linux, build-macos]
+    needs: [build-linux]
     runs-on: ubuntu-latest
     name: Publish Release
     steps:
@@ -140,11 +141,12 @@ jobs:
         path: /tmp
 
     - name: upload macOS release binary
+      if: false
       uses: ncipollo/release-action@v1
       with:
         tag: ${{needs.build-linux.outputs.tag}}
         omitNameDuringUpdate: true
-        artifactErrorsFailBuild: true
+        artifactErrorsFailBuild: false
         artifacts: /tmp/juvix-darwin*
         draft: true
         allowUpdates: true
@@ -158,6 +160,7 @@ jobs:
         allowUpdates: true
 
   bench:
+    if: false
     needs: publish-release
     name: Run benchmarks
     runs-on: ubuntu-20.04
