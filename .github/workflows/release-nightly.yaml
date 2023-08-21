@@ -27,6 +27,7 @@ jobs:
           submodules: true
           repository: anoma/juvix
           ref: ${{ github.event.inputs.ref }}
+          fetch-depth: 0
 
       - name: create ~/.local/bin
         run: mkdir -p "$HOME/.local/bin"
@@ -100,6 +101,7 @@ jobs:
           submodules: true
           repository: anoma/juvix
           ref: main
+          fetch-depth: 0
 
       - name: Set homebrew LLVM CC and LIBTOOL vars (macOS)
         run: |
