@@ -46,6 +46,9 @@ jobs:
       - name: Stack permissions bug workaround
         run: "chown -R $(id -un):$(id -gn) ~"
 
+      - name: Git permissions workaround
+        run: "chown -R $(id -un):$(id -gn) ."
+
       - name: Install clang14
         run: apk add --update clang14
 
